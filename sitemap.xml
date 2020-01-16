@@ -3,15 +3,46 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://edqwer.github.com/categories/</loc>
+    <loc>https://edqwer.github.io/post/</loc>
+    <lastmod>2020-01-16T22:52:52+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://edqwer.github.com/</loc>
+    <loc>https://edqwer.github.io/</loc>
+    <lastmod>2020-01-16T22:52:52+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://edqwer.github.com/tags/</loc>
+    <loc>https://edqwer.github.io/post/design_pattern/srp/</loc>
+    <lastmod>2020-01-16T22:52:52+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://edqwer.github.io/post/design_pattern/ocp/</loc>
+    <lastmod>2020-01-16T22:52:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://edqwer.github.io/post/design_pattern/sum/</loc>
+    <lastmod>2020-01-16T22:51:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://edqwer.github.io/post/test/</loc>
+    <lastmod>2020-01-16T22:41:06+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://edqwer.github.io/post/blog/</loc>
+    <lastmod>2019-11-06T22:37:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://edqwer.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://edqwer.github.io/tags/</loc>
   </url>
   
 </urlset>

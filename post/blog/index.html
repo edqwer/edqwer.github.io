@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>golang 单例模式 // zgq blog</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.60.0-DEV" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="John Doe" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://edqwer.github.io/css/main.min.f90f5edd436ec7b74ad05479a05705770306911f721193e7845948fb07fe1335.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="golang 单例模式"/>
+<meta name="twitter:description" content="单例对象的类必须保证只有一个实例存在，全局有唯一接口访问
+懒汉方式 指全局的单例实例在第一次被使用时构建。
+【不加锁的懒汉方式】
+type singleton struct{} var instance *singleton func GetIns() *singleton{ if instance == nil { instance = &amp;singleton{} } return instance }  缺点：非线程安全。当正在创建时，有线程来访问此时ins = nil就会再创建，单例类就会有多个实例了。
+【加锁的懒汉方式】
+type singleton struct{} var ins *singleton var mu sync.Mutex func GetIns() *singleton{ mu.Lock() defer mu.Unlock() if ins == nil { ins = &amp;singleton{} } return ins }  缺点：虽然解决并发的问题，但每次加锁是要付出代价的
+【加检查锁的懒汉方式】 Check-Lock-Check模式 双重锁模式
+type singleton struct{} var ins *singleton var mu sync."/>
+
+    <meta property="og:title" content="golang 单例模式" />
+<meta property="og:description" content="单例对象的类必须保证只有一个实例存在，全局有唯一接口访问
+懒汉方式 指全局的单例实例在第一次被使用时构建。
+【不加锁的懒汉方式】
+type singleton struct{} var instance *singleton func GetIns() *singleton{ if instance == nil { instance = &amp;singleton{} } return instance }  缺点：非线程安全。当正在创建时，有线程来访问此时ins = nil就会再创建，单例类就会有多个实例了。
+【加锁的懒汉方式】
+type singleton struct{} var ins *singleton var mu sync.Mutex func GetIns() *singleton{ mu.Lock() defer mu.Unlock() if ins == nil { ins = &amp;singleton{} } return ins }  缺点：虽然解决并发的问题，但每次加锁是要付出代价的
+【加检查锁的懒汉方式】 Check-Lock-Check模式 双重锁模式
+type singleton struct{} var ins *singleton var mu sync." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://edqwer.github.io/post/blog/" />
+<meta property="article:published_time" content="2019-11-06T22:37:16+08:00" />
+<meta property="article:modified_time" content="2019-11-06T22:37:16+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://edqwer.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="John Doe" /></a>
+      <h1>zgq blog</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vehicula turpis sit amet elit pretium.</p>
+      <div class="app-header-social">
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">golang 单例模式</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Nov 6, 2019
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      
+
+<p>单例对象的类必须保证只有一个实例存在，全局有唯一接口访问</p>
+
+<h4 id="懒汉方式">懒汉方式</h4>
+
+<p>指全局的单例实例在第一次被使用时构建。</p>
+
+<p>【不加锁的懒汉方式】</p>
+
+<pre><code class="language-golang">type singleton struct{}
+var instance *singleton
+func GetIns() *singleton{
+    if instance == nil {
+        instance = &amp;singleton{}
+    }
+    return instance
+}
+</code></pre>
+
+<p>缺点：非线程安全。当正在创建时，有线程来访问此时ins = nil就会再创建，单例类就会有多个实例了。</p>
+
+<p>【加锁的懒汉方式】</p>
+
+<pre><code class="language-golang">type singleton struct{}
+var ins *singleton
+var mu sync.Mutex
+func GetIns() *singleton{
+    mu.Lock()
+    defer mu.Unlock()
+    if ins == nil {
+        ins = &amp;singleton{}
+    }
+    return ins
+}
+</code></pre>
+
+<p>缺点：虽然解决并发的问题，但每次加锁是要付出代价的</p>
+
+<p>【加检查锁的懒汉方式】
+Check-Lock-Check模式
+双重锁模式</p>
+
+<pre><code class="language-golang">type singleton struct{}
+var ins *singleton
+var mu sync.Mutex
+func GetIns() *singleton{
+    if ins == nil {
+        mu.Lock()
+        defer mu.Unlock()
+        if ins == nil {
+            ins = &amp;singleton{}
+        }
+    }
+    return ins
+}
+</code></pre>
+
+<p>这个模式背后的想法是想一开始就检查。用于减少任何激进的锁定。因为一个IF语句比锁定便宜的多。第二我们想等待并获取排他锁所以的块内同一时间只能有一个执行，但是在第一次检察和和排他锁获取之间可能会有其他线程想要获取锁，因此我们需要在块内再次的检查以避免单例实例被其他实例替换。
+缺点：避免了每次加锁，提高代码效率</p>
+
+<p>【使用atomic的原子性保证只初始化一次】</p>
+
+<pre><code class="language-golang">type singleton struct{}
+var instance *singleton
+var initialized uint32
+func GetIns() *singleton {
+    if atomic.LoadUInt32(&amp;initialized) == 1 {
+        return instance
+    }
+    mu.Lock()
+    defer mu.Unlock()
+    if initialized == 0 {
+        instance = &amp;singleton{}
+        atomic.StoreUint32(&amp;initialized, 1)
+    }
+    return instance
+}
+</code></pre>
+
+<p>使用 sync/atomic 包，我们可以原子性的加载和设置标识指示是否已经初始化了我们的实例。</p>
+
+<p>【<strong>golang</strong> 懒汉方式最佳实践】</p>
+
+<pre><code class="language-golang">type singleton struct{}
+var ins *singleton
+var once sync.Once
+func GetIns() *singleton {
+    once.Do(func(){
+        ins = &amp;singleton{}
+    })
+    return ins
+}
+</code></pre>
+
+<p>Once保证了只实例化一次</p>
+
+<p>以下是Once的源码</p>
+
+<pre><code class="language-golang">type Once struct {
+    m    Mutex
+    done uint32
+}
+
+func (o *Once) Do(f func()) {
+    if atomic.LoadUint32(&amp;o.done) == 1 { // &lt;-- Check
+        return
+    }
+    // Slow-path.
+    o.m.Lock()                           // &lt;-- Lock
+    defer o.m.Unlock()
+    if o.done == 0 {                     // &lt;-- Check
+        defer atomic.StoreUint32(&amp;o.done, 1)
+        f()
+    }
+}
+</code></pre>
+
+<p>这意味着我们可以运用非常棒的 Go sync包来调用一个只执行一次的方法。因此，我们可以向下面这样调用 once.Do() 方法</p>
+
+<pre><code class="language-golang">once.Do(func() {
+    // 执行安全的初始化操作
+})
+</code></pre>
+
+<h4 id="饿汉模式">饿汉模式</h4>
+
+<p>指全局的单例实例在类装载时构建。</p>
+
+<pre><code class="language-golang">type singleton struct{}
+var ins *singleton = &amp;singleton{}
+func GetIns() *singleton{
+    return ins
+}
+</code></pre>
+
+<p>缺点：如果singleton创建初始化比较复杂耗时时，加载时间会延长。</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
